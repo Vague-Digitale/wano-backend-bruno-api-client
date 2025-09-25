@@ -1,0 +1,50 @@
+meta {
+  name: Get Countries
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/common/countries
+  body: none
+  auth: none
+}
+
+docs {
+  ## Get Active Countries
+
+  Récupère la liste de tous les pays actifs disponibles dans le système.
+
+  **Public**: Aucune authentification requise
+
+  ### Response
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "id": "cuid...",
+        "code": "CI",
+        "name": "Côte d'Ivoire",
+        "mask": "XX XX XX XX XX",
+        "prefix": "225",
+        "language": "fr",
+        "timezone": "Africa/Abidjan",
+        "currency": "XOF",
+        "symbol": "FCFA",
+        "flag": "https://..."
+      }
+    ]
+  }
+  ```
+
+  ### Pays disponibles:
+  - CI: Côte d'Ivoire (actif)
+  - SN: Sénégal (actif)
+  - TG: Togo (actif)
+  - GH: Ghana (inactif)
+  - BJ: Bénin (actif)
+  - ML: Mali (actif)
+  - BF: Burkina Faso (actif)
+  - NE: Niger (actif)
+}

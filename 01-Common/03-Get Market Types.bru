@@ -1,0 +1,55 @@
+meta {
+  name: Get Market Types
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/common/market-types
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  ## Get Active Market Types
+
+  Récupère la liste de tous les types de market actifs.
+
+  **Authentification**: JWT Token requis
+
+  ### Response
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "id": "cuid...",
+        "name": "Boutique avec présence digitale",
+        "slug": "boutique-presence-digitale",
+        "description": "Boutiques physiques cherchant à se digitaliser et vendre en ligne"
+      },
+      {
+        "id": "cuid...",
+        "name": "Logistique et livraison",
+        "slug": "logistique-livraison",
+        "description": "Services de transport et de livraison"
+      },
+      {
+        "id": "cuid...",
+        "name": "Services, rendez-vous et file d'attente",
+        "slug": "services-rendez-vous",
+        "description": "Gestion de services avec réservation ou queue virtuelle"
+      }
+    ]
+  }
+  ```
+
+  ### Types disponibles:
+  1. **Boutique avec présence digitale** (actif) - Pour les commerces physiques qui veulent aussi vendre en ligne
+  2. **Logistique et livraison** (inactif) - Services de transport et livraison
+  3. **Services, rendez-vous et file d'attente** (inactif) - Gestion de services avec réservations
+}

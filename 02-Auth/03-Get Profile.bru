@@ -1,0 +1,48 @@
+meta {
+  name: Get Profile (Me)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/auth/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  ## Get Current User Profile
+
+  Récupère les informations de l'utilisateur connecté.
+
+  **Authentification**: JWT Token requis
+
+  ### Headers
+  ```
+  Authorization: Bearer {{token}}
+  ```
+
+  ### Response
+  ```json
+  {
+    "success": true,
+    "data": {
+      "id": "cuid...",
+      "email": "owner@wano.ci",
+      "full_name": "Owner User",
+      "phoneNumber": null,
+      "countryId": "ci-id",
+      "isActive": true,
+      "emailVerifiedAt": null,
+      "phoneVerifiedAt": null,
+      "image": null,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  }
+  ```
+}

@@ -1,0 +1,62 @@
+meta {
+  name: Login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/login/email
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{email}}",
+    "password": "{{password}}"
+  }
+}
+
+script:post-response {
+  if (res.body.success) {
+    bru.setEnvVar("token", res.body.data.token.token);
+  }
+}
+
+docs {
+  ## User Login
+
+  Authentification par email/mot de passe.
+
+  **Public**: Aucune authentification requise
+
+  ### Request Body
+  - `email` (required): Email de l'utilisateur
+  - `password` (required): Mot de passe
+
+  ### Response
+  ```json
+  {
+    "success": true,
+    "message": "Connexion réussie",
+    "data": {
+      "user": {
+        "id": "cuid...",
+        "email": "owner@wano.ci",
+        "full_name": "Owner User",
+        "phoneNumber": null,
+        "countryId": "ci-id",
+        "isActive": true,
+        "emailVerifiedAt": null,
+        "phoneVerifiedAt": null
+      },
+      "token": {
+        "type": "bearer",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      }
+    }
+  }
+  ```
+
+  Le token JWT est automatiquement sauvegardé dans la variable d'environnement `token`.
+}

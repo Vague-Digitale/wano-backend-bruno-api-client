@@ -1,0 +1,44 @@
+meta {
+  name: Resend Verification Email
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/auth/resend-verification
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "test@wano.ci"
+  }
+}
+
+docs {
+  ## Resend Verification Email
+
+  Renvoie l'email de vérification à l'utilisateur.
+
+  **Public**: Aucune authentification requise
+
+  ### Request Body
+  - `email` (required): Email de l'utilisateur
+
+  ### Response Success
+  ```json
+  {
+    "success": true,
+    "message": "Email de vérification envoyé"
+  }
+  ```
+
+  ### Response (Email déjà vérifié)
+  ```json
+  {
+    "success": true,
+    "message": "Email déjà vérifié"
+  }
+  ```
+}

@@ -1,0 +1,44 @@
+meta {
+  name: Logout
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/auth/logout
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+script:post-response {
+  if (res.body.success) {
+    bru.setEnvVar("token", "");
+  }
+}
+
+docs {
+  ## Logout
+
+  Déconnecte l'utilisateur et invalide le token JWT.
+
+  **Authentification**: JWT Token requis
+
+  ### Headers
+  ```
+  Authorization: Bearer {{token}}
+  ```
+
+  ### Response
+  ```json
+  {
+    "success": true,
+    "message": "Déconnexion réussie"
+  }
+  ```
+
+  Le token est automatiquement supprimé de l'environnement Bruno après déconnexion.
+}

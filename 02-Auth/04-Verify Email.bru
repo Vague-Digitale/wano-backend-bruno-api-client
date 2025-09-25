@@ -1,0 +1,46 @@
+meta {
+  name: Verify Email
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/auth/verify-email
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "test@wano.ci",
+    "token": "your-verification-token-from-email"
+  }
+}
+
+docs {
+  ## Verify Email
+
+  Vérifie l'adresse email de l'utilisateur avec le token reçu par email.
+
+  **Public**: Aucune authentification requise
+
+  ### Request Body
+  - `email` (required): Email de l'utilisateur
+  - `token` (required): Token de vérification reçu par email
+
+  ### Response Success
+  ```json
+  {
+    "success": true,
+    "message": "Email vérifié avec succès"
+  }
+  ```
+
+  ### Response Error
+  ```json
+  {
+    "success": false,
+    "message": "Token de vérification invalide"
+  }
+  ```
+}

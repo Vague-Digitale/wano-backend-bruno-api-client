@@ -1,0 +1,56 @@
+meta {
+  name: Register
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "test@wano.ci",
+    "password": "Password123!",
+    "full_name": "Test User",
+    "phone_number": "0701020304",
+    "country_id": ""
+  }
+}
+
+docs {
+  ## User Registration
+
+  Créer un nouveau compte utilisateur.
+
+  **Public**: Aucune authentification requise
+
+  ### Request Body
+  - `email` (required): Email unique
+  - `password` (required): Minimum 6 caractères
+  - `full_name` (required): Nom complet (min 3 caractères)
+  - `phone_number` (optional): Numéro de téléphone
+  - `country_id` (optional): ID du pays (défaut: Côte d'Ivoire)
+
+  ### Response
+  ```json
+  {
+    "success": true,
+    "message": "Utilisateur enregistré avec succès",
+    "data": {
+      "id": "cuid...",
+      "email": "test@wano.ci",
+      "full_name": "Test User",
+      "phoneNumber": "0701020304",
+      "countryId": "ci-id",
+      "isActive": true,
+      "emailVerifiedAt": null,
+      "phoneVerifiedAt": null
+    }
+  }
+  ```
+
+  Un email de bienvenue avec lien de vérification est envoyé automatiquement.
+}

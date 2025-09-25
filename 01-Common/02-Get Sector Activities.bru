@@ -1,0 +1,63 @@
+meta {
+  name: Get Sector Activities
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/common/sector-activities
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  ## Get Active Sector Activities
+
+  Récupère la liste de tous les secteurs d'activité actifs.
+
+  **Authentification**: JWT Token requis
+
+  ### Response
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "id": "cuid...",
+        "name": "Vêtements & accessoires",
+        "slug": "vetements-accessoires",
+        "description": "Mode, habillement et accessoires de mode",
+        "icon": "👔"
+      },
+      {
+        "id": "cuid...",
+        "name": "Électronique & high-tech",
+        "slug": "electronique-high-tech",
+        "description": "Appareils électroniques, informatique et gadgets",
+        "icon": "💻"
+      }
+    ]
+  }
+  ```
+
+  ### Secteurs disponibles:
+  - Vêtements & accessoires
+  - Électronique & high-tech
+  - Beauté & cosmétique
+  - Alimentation & boissons
+  - Maison & décoration
+  - Produits bébés & enfants
+  - Auto & moto
+  - Animaux
+  - Loisirs & culture
+  - Services divers
+  - Santé & pharmacie
+  - Sport & fitness
+  - Éducation & formation
+  - Événementiel
+  - Immobilier
+}
