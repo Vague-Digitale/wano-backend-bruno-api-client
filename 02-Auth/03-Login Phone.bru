@@ -1,0 +1,25 @@
+meta {
+  name: 03-Login Phone
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/auth/login/phone
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "country_code": "CI",
+    "phone_number": "0102030405",
+    "password": "{{password}}"
+  }
+}
+
+script:post-response {
+  if (res.status === 200 && res.body.data && res.body.data.token) {
+    bru.setEnvVar("token", res.body.data.token.token);
+  }
+}
