@@ -1,0 +1,102 @@
+meta {
+  name: Select Market
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/markets/select/{{marketId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+vars:pre-request {
+  marketId: market-id-here
+}
+
+docs {
+  ## Select Market
+
+  Sélectionne un market et charge les permissions complètes de l'utilisateur pour ce market.
+  Les permissions sont mises en cache dans Redis pour 10 minutes.
+
+  **Authentification**: JWT Token requis
+
+  ### Headers
+  ```
+  Authorization: Bearer {{token}}
+  ```
+
+  ### URL Parameters
+  - `marketId` (required): ID du market à sélectionner
+
+  ### Response
+  ```json
+  {
+    "success": true,
+    "data": {
+      "market": {
+        "id": "market-id",
+        "name": "Ma Boutique",
+        "slug": "ma-boutique",
+        "logo": "logo-url",
+        "status": "trial",
+        "currency": "XOF",
+        "country": {
+          "id": "country-id",
+          "code": "CI",
+          "name": "Côte d'Ivoire",
+          "flag": "https://..."
+        },
+        "marketType": {
+          "id": "type-id",
+          "name": "Boutique avec présence digitale",
+          "image": "https://..."
+        },
+        "sectorActivity": {
+          "id": "sector-id",
+          "name": "Vêtements & accessoires",
+          "icon": "https://..."
+        }
+      },
+      "role": {
+        "slug": "admin",
+        "name": "Administrateur",
+        "level": "6"
+      },
+      "permissions": ["*"]
+    }
+  }
+  ```
+
+  ### Permissions possibles
+  - `*`: Toutes les permissions (admin)
+  - `market.view`, `market.edit`, `market.delete`, `market.settings`
+  - `users.view`, `users.create`, `users.edit`, `users.delete`, `users.roles`
+  - `products.view`, `products.create`, `products.edit`, `products.delete`
+  - `orders.view`, `orders.create`, `orders.edit`, `orders.delete`, `orders.refund`
+  - `customers.view`, `customers.create`, `customers.edit`, `customers.delete`
+  - `reports.view`, `reports.export`
+  - `analytics.view`
+  - `finance.view`, `finance.manage`, `finance.withdraw`
+  - `settings.view`, `settings.edit`, `settings.billing`
+
+  ### Erreurs possibles
+  ```json
+  {
+    "success": false,
+    "message": "Vous n'avez pas accès à ce market"
+  }
+  ```
+
+  ```json
+  {
+    "success": false,
+    "message": "Votre accès à ce market est désactivé"
+  }
+  ```
+}

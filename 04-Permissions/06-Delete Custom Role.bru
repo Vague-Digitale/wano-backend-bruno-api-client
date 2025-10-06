@@ -1,0 +1,50 @@
+meta {
+  name: Delete Custom Role
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/api/permissions/markets/{{marketId}}/roles/{{roleId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+vars:pre-request {
+  marketId: market-id-here
+  roleId: clx_role_id_here
+}
+
+docs {
+  # Delete Custom Role
+
+  Supprimer un rôle personnalisé.
+
+  **Authentification**: JWT Token requis
+
+  ## URL Parameters
+  - `roleId` (required): ID du rôle à supprimer
+
+  ## Response 200 OK
+  ```json
+  {
+    "success": true,
+    "message": "Rôle supprimé avec succès"
+  }
+  ```
+
+  ## Erreurs possibles
+  - 404: "Rôle non trouvé"
+  - 403: "Les rôles système ne peuvent pas être supprimés"
+  - 409: "Ce rôle est utilisé par des utilisateurs. Veuillez d'abord réassigner ces utilisateurs à un autre rôle."
+
+  ## Notes
+  - Seuls les rôles custom (`isSystem: false`) peuvent être supprimés
+  - Impossible de supprimer un rôle si des utilisateurs l'utilisent
+  - Les permissions associées au rôle sont automatiquement supprimées
+  - Les rôles système (owner, admin, manager, etc.) ne peuvent jamais être supprimés
+}

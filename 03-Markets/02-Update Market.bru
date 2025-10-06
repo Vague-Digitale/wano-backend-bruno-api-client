@@ -1,0 +1,87 @@
+meta {
+  name: Update Market
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/api/markets/{{marketId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Ma Boutique Mise à Jour",
+    "phoneNumber": "0708080808",
+    "description": "Description mise à jour",
+    "slogan": "Nouveau slogan",
+    "address": "Marcory, Abidjan",
+    "email": "nouveau@email.ci",
+    "defaultHexColor": "#ff5733"
+  }
+}
+
+docs {
+  # Update Market
+
+  Met à jour les informations de base d'une boutique.
+
+  ## Champs optionnels (tous)
+  - `name`: Nom de la boutique (3-100 caractères)
+  - `phoneNumber`: Numéro de téléphone
+  - `description`: Description de la boutique
+  - `slogan`: Slogan marketing
+  - `address`: Adresse physique
+  - `email`: Email de contact (validation email)
+  - `defaultHexColor`: Couleur thème (format #hex)
+
+  ## Notes
+  - Tous les champs sont optionnels
+  - Seuls les champs fournis seront mis à jour
+  - Le slug n'est pas modifiable
+
+  ## Response 200 OK
+  ```json
+  {
+    "success": true,
+    "message": "Market mis à jour avec succès",
+    "data": {
+      "id": "clx1234567890",
+      "name": "Ma Boutique Mise à Jour",
+      "phoneNumber": "0708080808",
+      "status": "trial",
+      "currency": "XOF",
+      "description": "Description mise à jour",
+      "slogan": "Nouveau slogan",
+      "address": "Marcory, Abidjan",
+      "email": "nouveau@email.ci",
+      "defaultHexColor": "#ff5733",
+      "country": {
+        "id": "clx1234567890",
+        "code": "CI",
+        "name": "Côte d'Ivoire",
+        "currency": "XOF",
+        "symbol": "FCFA",
+        "flag": "https://..."
+      },
+      "marketType": {
+        "id": "clx1234567890",
+        "name": "Boutique avec présence digitale",
+        "description": "...",
+        "image": "https://..."
+      },
+      "sectorActivity": {
+        "id": "clx1234567890",
+        "name": "Vêtements & accessoires",
+        "description": "...",
+        "icon": "https://..."
+      }
+    }
+  }
+  ```
+}

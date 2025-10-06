@@ -1,0 +1,88 @@
+meta {
+  name: Create Custom Role
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/permissions/markets/{{marketId}}/roles
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+vars:pre-request {
+  marketId: market-id-here
+}
+
+body:json {
+  {
+    "name": "Gestionnaire Stocks",
+    "description": "Responsable de la gestion des stocks et inventaires",
+    "permissionIds": [
+      "clx_perm_products_view",
+      "clx_perm_products_create",
+      "clx_perm_products_edit"
+    ]
+  }
+}
+
+docs {
+  # Create Custom Role
+
+  Créer un rôle personnalisé avec des permissions spécifiques.
+
+  **Authentification**: JWT Token requis
+
+  ## Body
+  - `name` (required): Nom du rôle (3-50 caractères)
+  - `description` (optional): Description du rôle
+  - `permissionIds` (required): Array d'IDs de permissions (minimum 1)
+
+  ## Response 201 Created
+  ```json
+  {
+    "success": true,
+    "message": "Rôle personnalisé créé avec succès",
+    "data": {
+      "id": "clx_new_role",
+      "slug": "gestionnaire_stocks",
+      "name": "Gestionnaire Stocks",
+      "description": "Responsable de la gestion des stocks et inventaires",
+      "level": "0",
+      "isSystem": false,
+      "permissions": [
+        {
+          "id": "clx_perm_products_view",
+          "slug": "products.view",
+          "name": "Voir les produits"
+        },
+        {
+          "id": "clx_perm_products_create",
+          "slug": "products.create",
+          "name": "Créer des produits"
+        },
+        {
+          "id": "clx_perm_products_edit",
+          "slug": "products.edit",
+          "name": "Modifier des produits"
+        }
+      ]
+    }
+  }
+  ```
+
+  ## Erreurs possibles
+  - 400: "Un rôle avec ce nom existe déjà"
+  - 400: "Certaines permissions sont invalides"
+  - 400: "Le nom doit contenir entre 3 et 50 caractères"
+  - 400: "Au moins une permission doit être sélectionnée"
+
+  ## Notes
+  - Le slug est généré automatiquement depuis le nom (normalisé en snake_case)
+  - Tous les rôles custom ont `level: "0"` et `isSystem: false`
+  - Les permissions doivent exister dans la base de données
+}

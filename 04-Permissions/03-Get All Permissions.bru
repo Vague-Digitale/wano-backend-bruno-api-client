@@ -1,0 +1,81 @@
+meta {
+  name: Get All Permissions
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/permissions/list
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  # Get All Permissions
+
+  Récupère toutes les permissions disponibles, groupées par catégorie.
+
+  **Authentification**: JWT Token requis
+
+  ## Response 200 OK
+  ```json
+  {
+    "success": true,
+    "data": {
+      "market": [
+        {
+          "id": "clx_perm_1",
+          "slug": "market.view",
+          "name": "Voir le market",
+          "description": "Permet de voir les informations du market"
+        },
+        {
+          "id": "clx_perm_2",
+          "slug": "market.edit",
+          "name": "Modifier le market",
+          "description": null
+        }
+      ],
+      "products": [
+        {
+          "id": "clx_perm_3",
+          "slug": "products.view",
+          "name": "Voir les produits",
+          "description": null
+        },
+        {
+          "id": "clx_perm_4",
+          "slug": "products.create",
+          "name": "Créer des produits",
+          "description": null
+        }
+      ],
+      "orders": [...],
+      "customers": [...],
+      "users": [...],
+      "reports": [...],
+      "analytics": [...],
+      "finance": [...],
+      "settings": [...]
+    }
+  }
+  ```
+
+  ## Catégories disponibles
+  - **market**: Gestion du market
+  - **products**: Gestion des produits
+  - **orders**: Gestion des commandes
+  - **customers**: Gestion des clients
+  - **users**: Gestion des utilisateurs
+  - **reports**: Rapports
+  - **analytics**: Analytiques
+  - **finance**: Finances
+  - **settings**: Paramètres
+
+  ## Utilisation
+  Cette liste permet de construire l'interface de création/modification de rôles custom.
+}

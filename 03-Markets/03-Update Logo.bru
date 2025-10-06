@@ -1,0 +1,71 @@
+meta {
+  name: Update Market Logo
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/markets/{{marketId}}/logo
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:multipart-form {
+  logo: @file(/Users/koffidavidadzasu/Pictures/DALL·E 2022-12-14 01.29.32 - baby african super heroes in 3d.jpg)
+}
+
+docs {
+  # Update Market Logo
+  
+  Upload ou met à jour le logo d'une boutique.
+  
+  ## Paramètres URL
+  - `marketId`: ID du market
+  
+  ## Form Data
+  - `logo`: Fichier image (PNG, JPG, JPEG, WebP)
+  
+  ## Formats acceptés
+  - PNG
+  - JPG / JPEG
+  - WebP
+  - GIF
+  
+  ## Taille maximale
+  - 5 MB
+  
+  ## Notes
+  - L'image sera automatiquement uploadée vers DigitalOcean Spaces
+  - L'ancien logo sera automatiquement supprimé (DB + stockage S3) si existant
+  - Un nouvel enregistrement media est créé en base de données
+  - Le market est mis à jour avec le nouveau logoId
+  
+  ## Response 200 OK
+  ```json
+  {
+    "success": true,
+    "message": "Logo mis à jour avec succès",
+    "data": {
+      "id": "clx1234567890",
+      "name": "Ma Boutique",
+      "logoId": "clx_media_id_123",
+      "logo": {
+        "id": "clx_media_id_123",
+        "url": "https://wano-digital.fra1.cdn.digitaloceanspaces.com/wano/dev/market-id/logos/abc123.png",
+        "type": "image",
+        "size": 45678,
+        "mimeType": "image/png"
+      }
+    }
+  }
+  ```
+  
+  ## Erreurs possibles
+  - 400: "Format de fichier non supporté"
+  - 400: "Fichier trop volumineux (max 5MB)"
+  - 404: "Market non trouvé"
+}

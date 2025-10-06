@@ -1,0 +1,68 @@
+meta {
+  name: Get User Markets
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/markets
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  ## Get User Markets
+
+  Récupère la liste des markets (boutiques) auxquels l'utilisateur a accès.
+
+  **Authentification**: JWT Token requis
+
+  ### Headers
+  ```
+  Authorization: Bearer {{token}}
+  ```
+
+  ### Response
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "marketId": "market-id-1",
+        "marketName": "Ma Boutique",
+        "marketLogo": "logo-url",
+        "marketSlug": "ma-boutique",
+        "status": "trial",
+        "currency": "XOF",
+        "country": {
+          "id": "country-id",
+          "code": "CI",
+          "name": "Côte d'Ivoire",
+          "flag": "https://..."
+        },
+        "marketType": {
+          "id": "type-id",
+          "name": "Boutique avec présence digitale",
+          "image": "https://..."
+        },
+        "sectorActivity": {
+          "id": "sector-id",
+          "name": "Vêtements & accessoires",
+          "icon": "https://..."
+        },
+        "role": {
+          "slug": "admin",
+          "name": "Administrateur"
+        }
+      }
+    ]
+  }
+  ```
+
+  Cette route retourne les informations de base des markets avec leurs relations.
+  Pour obtenir les permissions détaillées, utilisez la route `/api/markets/select/:marketId`.
+}

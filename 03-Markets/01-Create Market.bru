@@ -1,0 +1,91 @@
+meta {
+  name: Create Market
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/markets
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Ma Boutique Test",
+    "phoneNumber": "0707070707",
+    "countryId": "{{countryId}}",
+    "marketTypeId": "{{marketTypeId}}",
+    "sectorActivityId": "{{sectorActivityId}}"
+  }
+}
+
+docs {
+  # Create Market
+  
+  Crée une nouvelle boutique pour l'utilisateur connecté.
+  
+  ## Champs requis
+  - `name`: Nom de la boutique (3-100 caractères)
+  - `phoneNumber`: Numéro de téléphone
+  - `countryId`: ID du pays
+  - `marketTypeId`: ID du type de market
+  - `sectorActivityId`: ID du secteur d'activité
+  
+  ## Champs optionnels
+  - `description`: Description de la boutique
+  - `slogan`: Slogan marketing
+  - `address`: Adresse physique
+  - `email`: Email de contact
+  
+  ## Comportement
+  - Génère automatiquement un slug unique à partir du nom
+  - Attribue le rôle "owner" à l'utilisateur créateur
+  - Statut par défaut: "trial"
+  - Couleur par défaut: "#01817a"
+  - Devise: héritée du pays sélectionné
+  
+  ## Response 201 Created
+  ```json
+  {
+    "success": true,
+    "message": "Market créé avec succès",
+    "data": {
+      "id": "clx1234567890",
+      "name": "Ma Boutique Test",
+      "slug": "ma-boutique-test",
+      "phoneNumber": "0707070707",
+      "status": "trial",
+      "currency": "XOF",
+      "description": null,
+      "slogan": null,
+      "address": null,
+      "email": null,
+      "country": {
+        "id": "clx1234567890",
+        "code": "CI",
+        "name": "Côte d'Ivoire",
+        "currency": "XOF",
+        "symbol": "FCFA",
+        "flag": "https://..."
+      },
+      "marketType": {
+        "id": "clx1234567890",
+        "name": "Boutique avec présence digitale",
+        "description": "...",
+        "image": "https://..."
+      },
+      "sectorActivity": {
+        "id": "clx1234567890",
+        "name": "Vêtements & accessoires",
+        "description": "...",
+        "icon": "https://..."
+      }
+    }
+  }
+  ```
+}

@@ -1,0 +1,104 @@
+meta {
+  name: Update User Permissions
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{baseUrl}}/api/permissions/markets/{{marketId}}/users/{{userId}}/permissions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "permissions": [
+      "products.view",
+      "products.create",
+      "products.edit",
+      "orders.view",
+      "orders.create",
+      "customers.view"
+    ]
+  }
+}
+
+docs {
+  # Update User Permissions
+
+  Met à jour les permissions personnalisées d'un utilisateur dans un market.
+
+  ## Paramètres URL
+  - `marketId`: ID du market
+  - `userId`: ID de l'utilisateur dont on veut modifier les permissions
+
+  ## Body
+  - `permissions`: Array de slugs de permissions (string[])
+
+  ## Notes
+  - L'utilisateur doit déjà être membre du market (via market_users)
+  - Les permissions personnalisées écrasent les permissions du rôle
+  - Utiliser `["*"]` pour donner toutes les permissions (comme admin)
+  - Le cache des permissions est automatiquement invalidé après la mise à jour
+
+  ## Permissions disponibles
+  Catégories de permissions:
+  - **market**: view, edit, delete, settings
+  - **users**: view, create, edit, delete, roles
+  - **products**: view, create, edit, delete
+  - **orders**: view, create, edit, delete, refund
+  - **customers**: view, create, edit, delete
+  - **reports**: view, export
+  - **analytics**: view
+  - **finance**: view, manage, withdraw
+  - **settings**: view, edit, billing
+
+  ## Exemples de permissions
+  ```json
+  // Manager de produits
+  ["products.view", "products.create", "products.edit", "products.delete"]
+
+  // Gestionnaire de commandes
+  ["orders.view", "orders.create", "orders.edit", "customers.view"]
+
+  // Admin complet (wildcard)
+  ["*"]
+
+  // Caissier (lecture + création)
+  ["orders.view", "orders.create", "customers.view", "customers.create"]
+  ```
+
+  ## Response 200 OK
+  ```json
+  {
+    "success": true,
+    "message": "Permissions mises à jour avec succès",
+    "data": {
+      "userId": "clx1234567890",
+      "marketId": "clx0987654321",
+      "customPermissions": [
+        "products.view",
+        "products.create",
+        "products.edit",
+        "orders.view",
+        "orders.create",
+        "customers.view"
+      ]
+    }
+  }
+  ```
+
+  ## Erreurs possibles
+  - 400: "Utilisateur non trouvé dans ce market"
+  - 400: "Permissions invalides : product.invalid, order.wrong"
+
+  ## Validation
+  - Les permissions sont vérifiées dans la base de données
+  - Seules les permissions existantes sont acceptées
+  - Le wildcard "*" est toujours accepté (pas de validation)
+  - Les permissions invalides déclenchent une erreur avec la liste des permissions incorrectes
+}

@@ -1,0 +1,78 @@
+meta {
+  name: Update Market Domain
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/markets/{{marketId}}/domain
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "domain": "maboutique.ci"
+  }
+}
+
+docs {
+  # Update Market Domain
+
+  Met à jour ou supprime le domaine personnalisé d'une boutique.
+
+  ## Champs optionnels
+  - `domain`: Nom de domaine (ex: "maboutique.ci", null pour supprimer)
+
+  ## Validation
+  - Vérifie que le domaine n'est pas déjà utilisé par un autre market
+  - Valide le format du domaine (regex)
+  - Accepte les domaines et sous-domaines
+
+  ## Notes
+  - Pas de fonctionnalité DNS pour le moment
+  - Configuration DNS à faire manuellement par l'utilisateur
+  - Passer `domain: null` ou ne pas l'inclure supprimera le domaine
+
+  ## Exemples de domaines valides
+  - `maboutique.ci`
+  - `shop.example.com`
+  - `boutique-test.wano.ci`
+
+  ## Response 200 OK (avec domaine)
+  ```json
+  {
+    "success": true,
+    "message": "Domaine mis à jour avec succès. Configurez vos DNS pour pointer vers notre serveur.",
+    "data": {
+      "id": "clx1234567890",
+      "name": "Ma Boutique",
+      "slug": "ma-boutique",
+      "domain": "maboutique.ci"
+    }
+  }
+  ```
+
+  ## Response 200 OK (suppression)
+  ```json
+  {
+    "success": true,
+    "message": "Domaine retiré avec succès",
+    "data": {
+      "id": "clx1234567890",
+      "name": "Ma Boutique",
+      "slug": "ma-boutique",
+      "domain": null
+    }
+  }
+  ```
+
+  ## Erreurs possibles
+  - 400: "Ce domaine est déjà utilisé par un autre market"
+  - 400: "Format de domaine invalide"
+  - 400: "Market introuvable"
+}

@@ -1,0 +1,82 @@
+meta {
+  name: Get All Roles
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/permissions/markets/{{marketId}}/roles
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+vars:pre-request {
+  marketId: market-id-here
+}
+
+docs {
+  # Get All Roles
+
+  Récupère la liste de tous les rôles (système et custom) avec leurs permissions associées.
+
+  **Authentification**: JWT Token requis
+
+  ## Response 200 OK
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "id": "clx1234567890",
+        "slug": "admin",
+        "name": "Administrateur",
+        "description": "Accès complet au market",
+        "level": "6",
+        "isSystem": true,
+        "isActive": true,
+        "permissions": [
+          {
+            "id": "clx_perm_1",
+            "slug": "market.view",
+            "name": "Voir le market",
+            "category": "market"
+          },
+          {
+            "id": "clx_perm_2",
+            "slug": "products.create",
+            "name": "Créer des produits",
+            "category": "products"
+          }
+        ]
+      },
+      {
+        "id": "clx0987654321",
+        "slug": "gestionnaire_stocks",
+        "name": "Gestionnaire Stocks",
+        "description": null,
+        "level": "0",
+        "isSystem": false,
+        "isActive": true,
+        "permissions": [
+          {
+            "id": "clx_perm_3",
+            "slug": "products.view",
+            "name": "Voir les produits",
+            "category": "products"
+          }
+        ]
+      }
+    ]
+  }
+  ```
+
+  ## Notes
+  - Les rôles sont triés par niveau (owner → viewer → custom)
+  - `isSystem: true` = rôle non modifiable
+  - `isSystem: false` = rôle custom créé par l'utilisateur
+  - `level: "0"` pour tous les rôles custom
+}

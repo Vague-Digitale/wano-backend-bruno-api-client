@@ -1,0 +1,80 @@
+meta {
+  name: Update Role Permissions
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/api/permissions/markets/{{marketId}}/roles/{{roleId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+vars:pre-request {
+  marketId: market-id-here
+  roleId: clx_role_id_here
+}
+
+body:json {
+  {
+    "permissionIds": [
+      "clx_perm_products_view",
+      "clx_perm_products_create",
+      "clx_perm_products_edit",
+      "clx_perm_products_delete"
+    ]
+  }
+}
+
+docs {
+  # Update Role Permissions
+
+  Mettre à jour les permissions d'un rôle personnalisé.
+
+  **Authentification**: JWT Token requis
+
+  ## URL Parameters
+  - `roleId` (required): ID du rôle à modifier
+
+  ## Body
+  - `permissionIds` (required): Array d'IDs de permissions (peut être vide pour tout retirer)
+
+  ## Response 200 OK
+  ```json
+  {
+    "success": true,
+    "message": "Permissions du rôle mises à jour avec succès",
+    "data": {
+      "id": "clx_role_id",
+      "slug": "gestionnaire_stocks",
+      "name": "Gestionnaire Stocks",
+      "permissions": [
+        {
+          "id": "clx_perm_products_view",
+          "slug": "products.view",
+          "name": "Voir les produits"
+        },
+        {
+          "id": "clx_perm_products_create",
+          "slug": "products.create",
+          "name": "Créer des produits"
+        }
+      ]
+    }
+  }
+  ```
+
+  ## Erreurs possibles
+  - 404: "Rôle non trouvé"
+  - 403: "Les rôles système ne peuvent pas être modifiés"
+  - 400: "Certaines permissions sont invalides"
+
+  ## Notes
+  - Seuls les rôles custom (`isSystem: false`) peuvent être modifiés
+  - Les permissions existantes sont **remplacées** (pas fusionnées)
+  - Passer un array vide supprime toutes les permissions du rôle
+}
